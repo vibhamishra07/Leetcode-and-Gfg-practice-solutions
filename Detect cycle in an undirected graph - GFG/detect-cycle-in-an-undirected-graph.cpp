@@ -10,25 +10,28 @@ class Solution {
         // Code here
         
         vector<bool>visited(V+1, false);
-        
         for(int i=0; i<V; i++){
-            if(!visited[i] && dfs(adj, i, visited, -1)){
-                   return true;
+            if(!visited[i] && bfs(adj, i, visited)){
+              return true;
             }
+            
         }
         return false;
         
     }
-    
-    bool  dfs(vector<int> adj[], int i, vector<bool>& visited, int parent){
-        
+    bool bfs(vector<int>adj[],int i, vector<bool>&visited){
+        queue<pair<int, int>>que;
+        que.push({i, -1});
         visited[i]=true;
-        
-        for(int &c:adj[i]){
-            if(c==parent) continue;
-            if(visited[c]==true) return true;
-            if(dfs(adj, c, visited, i)){
-                return true;
+        while(!que.empty()){
+            int p=que.front().first;
+            int parent=que.front().second;
+            que.pop();
+            for(auto &c:adj[p]){
+                if(c==parent) continue;
+                if(visited[c]) return true;
+                visited[c]=true;
+                que.push({c, p});
             }
         }
         return false;
